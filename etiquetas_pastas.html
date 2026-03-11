@@ -3,63 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Etiquetas - Escritório</title>
+    <title>Gerador de Etiquetas - Jéssica Medeiros Maciel Lirman</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&family=EB+Garamond:wght@700&display=swap" rel="stylesheet">
+
     <style>
-        /* Estilos de Impressão */
-        @media print {
-            @page {
-                size: A4;
-                /* Margem superior de 1.5cm conforme solicitado, laterais e fundo de 1cm */
-                margin: 1.5cm 10mm 10mm 10mm;
-            }
-            html, body {
-                background: white !important;
-                background-color: white !important;
-                margin: 0;
-                padding: 0;
-            }
-            .no-print {
-                display: none !important;
-            }
-            .labels-container {
-                display: grid !important;
-                grid-template-columns: repeat(3, 5cm) !important;
-                gap: 2px; /* Espaço mínimo para guiar o corte sem desperdício */
-                justify-content: center;
-                background: transparent !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-            /* Remove sombras e fundos de interface na impressão */
-            .label-outer-wrapper {
-                box-shadow: none !important;
-                background: transparent !important;
-            }
-        }
-
-        /* Estilos de Tela */
         body {
-            background-color: #f3f4f6;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Lato', sans-serif;
+            background-color: #1a1a1a;
+            color: #e5e5e5;
+            min-height: 100vh;
+        }
+        
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-garamond { font-family: 'EB Garamond', serif; }
+        
+        .gold-gradient {
+            background: linear-gradient(90deg, #996515 0%, #D4AF37 50%, #996515 100%);
         }
 
+        .gold-text { color: #D4AF37; }
+        .border-gold { border-color: #D4AF37; }
+
+        /* Estilos da Etiqueta Real (Medidas Fixas) */
         .label-outer {
             width: 5cm;
             height: 3cm;
             border: 1px solid black;
             padding: 2px;
             box-sizing: border-box;
-            background: white;
+            background: white; /* Sempre branco para impressão */
             position: relative;
             display: flex;
             flex-direction: column;
+            color: black;
         }
 
         .label-inner {
             width: 100%;
-            height: 1.35cm;
+            height: 1.35cm; /* Conforme solicitado */
             border: 1px solid black;
             box-sizing: border-box;
             padding: 2px 4px;
@@ -69,72 +58,117 @@
 
         .label-text {
             font-family: 'EB Garamond', serif;
-            font-weight: 700; /* Negrito */
+            font-weight: 700;
             font-size: 11pt;
             line-height: 1.1;
             text-transform: uppercase;
-            color: black;
             outline: none;
         }
 
+        /* Configurações de Impressão */
+        @media print {
+            @page {
+                size: A4;
+                margin: 1.5cm 10mm 10mm 10mm; /* Margem superior de 1.5cm */
+            }
+            body {
+                background: white !important;
+                padding: 0;
+                margin: 0;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .labels-container {
+                display: grid !important;
+                grid-template-columns: repeat(3, 5cm) !important;
+                gap: 2px;
+                justify-content: center;
+                background: transparent !important;
+                padding: 0 !important;
+            }
+            .label-outer-wrapper {
+                box-shadow: none !important;
+            }
+        }
+
+        /* Interface na Tela */
         .labels-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, 5cm);
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
-            padding: 20px;
+            padding: 40px 20px;
         }
 
         .controls-card {
-            max-width: 800px;
-            margin: 20px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background: #121212;
+            border-bottom: 1px solid #333;
+        }
+
+        .input-luxury {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: white;
+            transition: border-color 0.3s;
+        }
+
+        .input-luxury:focus {
+            border-color: #D4AF37;
+            outline: none;
         }
     </style>
 </head>
-<body>
+<body class="flex flex-col">
 
-    <div class="no-print">
-        <div class="controls-card">
-            <h1 class="text-2xl font-bold text-gray-800 mb-4">Gerador de Etiquetas para Pastas</h1>
-            <p class="text-gray-600 mb-6">Insira os nomes abaixo. As etiquetas têm 5cm x 3cm (quadro interno de 1,35cm). Adicionada margem de segurança superior de 1,5cm para impressão.</p>
-            
-            <div class="flex gap-2 mb-6">
-                <input type="text" id="nameInput" placeholder="Nome para a etiqueta..." 
-                    class="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+    <!-- Cabeçalho de Luxo (no-print) -->
+    <header class="no-print controls-card relative pt-12 pb-8 px-6 text-center">
+        <div class="absolute top-0 left-0 w-full h-1 gold-gradient"></div>
+        
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-4">
+                <a href="index.html" class="gold-text hover:text-white transition-colors text-xs uppercase tracking-widest font-bold">
+                    <i class="fas fa-arrow-left mr-2"></i> Voltar ao Painel
+                </a>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl gold-text tracking-widest mb-2" style="font-variant: small-caps;">
+                Gerador de Etiquetas
+            </h1>
+            <p class="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-8">
+                Jéssica Medeiros Maciel Lirman • Solidez & Excelência
+            </p>
+
+            <!-- Área de Input -->
+            <div class="flex flex-col md:flex-row gap-3 max-w-2xl mx-auto">
+                <input type="text" id="nameInput" placeholder="Digite o nome para a etiqueta..." 
+                    class="input-luxury flex-1 p-3 rounded-sm text-sm">
                 <button onclick="addLabel()" 
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+                    class="bg-[#D4AF37] text-[#121212] px-8 py-3 font-bold uppercase text-xs tracking-widest hover:bg-white transition-all">
                     Gerar + Etiqueta
                 </button>
             </div>
 
-            <div class="flex flex-wrap gap-4 border-t pt-4">
-                <button onclick="window.print()" 
-                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                    Imprimir Etiquetas
+            <!-- Botões de Ação -->
+            <div class="flex justify-center gap-6 mt-8">
+                <button onclick="window.print()" class="text-white hover:text-[#D4AF37] transition-colors text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                    <i class="fas fa-print"></i> Imprimir (A4)
                 </button>
-                <button onclick="clearAll()" 
-                    class="text-red-600 hover:text-red-700 font-medium px-4 py-2">
-                    Limpar Tudo
+                <button onclick="clearAll()" class="text-gray-500 hover:text-red-500 transition-colors text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                    <i class="fas fa-trash-alt"></i> Limpar Tudo
                 </button>
             </div>
         </div>
-    </div>
+    </header>
 
     <!-- Área de Exibição das Etiquetas -->
     <div id="labelsGrid" class="labels-container">
-        <!-- As etiquetas serão inseridas aqui via JavaScript -->
+        <!-- Inseridas via JS -->
     </div>
 
     <script>
         const labelsGrid = document.getElementById('labelsGrid');
         const nameInput = document.getElementById('nameInput');
 
-        // Adicionar etiqueta ao pressionar Enter
         nameInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') addLabel();
         });
@@ -151,7 +185,7 @@
             wrapper.className = 'label-outer-wrapper relative group';
             
             const outer = document.createElement('div');
-            outer.className = 'label-outer';
+            outer.className = 'label-outer shadow-2xl';
             
             const inner = document.createElement('div');
             inner.className = 'label-inner';
@@ -161,10 +195,10 @@
             content.contentEditable = true;
             content.innerText = text;
             
-            // Botão de remover (visível apenas no ecrã)
+            // Botão de remover (apenas tela)
             const removeBtn = document.createElement('button');
             removeBtn.innerHTML = '&times;';
-            removeBtn.className = 'no-print absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-sm';
+            removeBtn.className = 'no-print absolute -top-3 -right-3 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-lg z-50';
             removeBtn.onclick = () => wrapper.remove();
 
             inner.appendChild(content);
@@ -176,7 +210,7 @@
         }
 
         function clearAll() {
-            if (confirm('Deseja remover todas as etiquetas geradas?')) {
+            if (confirm('Deseja remover todas as etiquetas?')) {
                 labelsGrid.innerHTML = '';
             }
         }
